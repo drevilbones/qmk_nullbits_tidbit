@@ -1,1 +1,1 @@
-QMK config files for my Nullbits Nibble keyboard
+QMK config files for my Nullbits Tidbit number pad.
