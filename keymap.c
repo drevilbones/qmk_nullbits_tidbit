@@ -1,4 +1,4 @@
-/* Copyright 2021 Jay Greco
+/* Copyright 2021 Jay Greco & 2024 Nick Scratch
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
-            KC_NUM, MO(1),    KC_PSLS,
+           KC_NUM,  KC_BSPC, KC_PSLS,
     KC_P7, KC_P8,   KC_P9,   KC_PAST,
     KC_P4, KC_P5,   KC_P6,   KC_PMNS,
     KC_P1, KC_P2,   KC_P3,   KC_PPLS,
-    KC_P0, KC_PDOT, KC_PEQL, KC_PENT
+    KC_P0, KC_PDOT, LT(1,KC_PEQL), KC_PENT
     ),
 
     [1] = LAYOUT(
@@ -30,21 +30,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______,
     _______, _______, _______, _______,
     _______, _______, _______, _______,
-    _______, _______, TG(2),   _______
+    TG(2),   _______, _______, _______
     ),
 
     [2] = LAYOUT(
-             _______, _______, _______,
-    RGB_SAI, RGB_VAI, RGB_HUI, RGB_SPI,
-    RGB_RMOD,RGB_TOG, RGB_MOD, _______,
-    RGB_SAD, RGB_VAD, RGB_HUD, RGB_SPD,
+             _______, _______, QK_BOOT,
+    _______, _______, _______, _______,
+    _______, _______, _______, _______,
+    _______, _______, _______, _______,
     _______, _______, _______, _______
     )
 };
 
-#ifdef ENCODER_MAP_ENABLE
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(_______, _______), ENCODER_CCW_CW(_______, _______), ENCODER_CCW_CW(_______, _______), },
-    [1] = { ENCODER_CCW_CW(_______, _______), ENCODER_CCW_CW(_______, _______), ENCODER_CCW_CW(_______, _______), ENCODER_CCW_CW(_______, _______), },
-};
-#endif
+void keyboard_post_init_user(void) {
+  rgblight_setrgb(RGB_RED);
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  switch (get_highest_layer(state)) {
+    case 2:
+      rgblight_setrgb(RGB_GREEN);
+      break;
+    default:
+      rgblight_setrgb(RGB_RED);
+      break;
+  }
+  return state;
+}
